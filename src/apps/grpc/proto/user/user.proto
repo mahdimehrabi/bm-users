@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package user;
+
+option go_package = "bm-users/src/apps/grpc/proto/user";
+
+message User{
+    int64 ID=1;
+    string email=2;
+    string fullname=3;
+    int64 lastLogin=4;
+    repeated string lastIPs=5;
+}
+
+message IDReq {
+  int64 ID=1;
+}
