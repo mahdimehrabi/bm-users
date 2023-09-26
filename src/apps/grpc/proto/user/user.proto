@@ -4,12 +4,34 @@ package user;
 
 option go_package = "bm-users/src/apps/grpc/proto/user";
 
-message User{
+service User {
+    rpc GetUser(IDReq) returns (UserResponse);
+    rpc Create(UserReq) returns (UserResponse);
+    rpc Update(UserReq) returns (UserResponse);
+    rpc ListUsers(Empty) returns (ListUserResponse);
+    rpc DeleteUser(UserReq) returns (ListUserResponse);
+}
+
+message Empty{
+
+}
+
+
+message UserResponse{
     int64 ID=1;
     string email=2;
     string fullname=3;
     int64 lastLogin=4;
     repeated string lastIPs=5;
+}
+
+message ListUserResponse{
+    repeated UserResponse users = 1;
+}
+
+message UserReq{
+    string email=1;
+    string fullname=2;
 }
 
 message IDReq {
