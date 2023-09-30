@@ -26,7 +26,7 @@ type UserClient interface {
 	Create(ctx context.Context, in *UserReq, opts ...grpc.CallOption) (*Empty, error)
 	Update(ctx context.Context, in *UserReq, opts ...grpc.CallOption) (*Empty, error)
 	ListUsers(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*ListUserResponse, error)
-	DeleteUser(ctx context.Context, in *UserReq, opts ...grpc.CallOption) (*ListUserResponse, error)
+	DeleteUser(ctx context.Context, in *UserReq, opts ...grpc.CallOption) (*Empty, error)
 }
 
 type userClient struct {
@@ -73,8 +73,8 @@ func (c *userClient) ListUsers(ctx context.Context, in *Empty, opts ...grpc.Call
 	return out, nil
 }
 
-func (c *userClient) DeleteUser(ctx context.Context, in *UserReq, opts ...grpc.CallOption) (*ListUserResponse, error) {
-	out := new(ListUserResponse)
+func (c *userClient) DeleteUser(ctx context.Context, in *UserReq, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
 	err := c.cc.Invoke(ctx, "/user.User/DeleteUser", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -90,7 +90,7 @@ type UserServer interface {
 	Create(context.Context, *UserReq) (*Empty, error)
 	Update(context.Context, *UserReq) (*Empty, error)
 	ListUsers(context.Context, *Empty) (*ListUserResponse, error)
-	DeleteUser(context.Context, *UserReq) (*ListUserResponse, error)
+	DeleteUser(context.Context, *UserReq) (*Empty, error)
 }
 
 // UnimplementedUserServer must be embedded to have forward compatible implementations.
@@ -109,7 +109,7 @@ func (UnimplementedUserServer) Update(context.Context, *UserReq) (*Empty, error)
 func (UnimplementedUserServer) ListUsers(context.Context, *Empty) (*ListUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListUsers not implemented")
 }
-func (UnimplementedUserServer) DeleteUser(context.Context, *UserReq) (*ListUserResponse, error) {
+func (UnimplementedUserServer) DeleteUser(context.Context, *UserReq) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteUser not implemented")
 }
 func (UnimplementedUserServer) mustEmbedUnimplementedUserServer() {}

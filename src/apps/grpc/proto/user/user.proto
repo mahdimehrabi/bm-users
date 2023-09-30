@@ -9,7 +9,7 @@ service User {
     rpc Create(UserReq) returns (Empty);
     rpc Update(UserReq) returns (Empty);
     rpc ListUsers(Empty) returns (ListUserResponse);
-    rpc DeleteUser(UserReq) returns (ListUserResponse);
+    rpc DeleteUser(UserReq) returns (Empty);
 }
 
 message Empty{

@@ -69,7 +69,7 @@ func (u UserServer) ListUsers(ctx context.Context, empty *user.Empty) (*user.Lis
 	}, nil
 }
 
-func (u UserServer) DeleteUser(ctx context.Context, req *user.UserReq) (*user.ListUserResponse, error) {
-	//TODO implement me
-	panic("implement me")
+func (u UserServer) DeleteUser(ctx context.Context, req *user.UserReq) (*user.Empty, error) {
+	err := u.userService.DeleteUser(int(req.GetID()))
+	return &user.Empty{}, err
 }
