@@ -23,8 +23,8 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type UserClient interface {
 	GetUser(ctx context.Context, in *IDReq, opts ...grpc.CallOption) (*UserResponse, error)
-	Create(ctx context.Context, in *UserReq, opts ...grpc.CallOption) (*UserResponse, error)
-	Update(ctx context.Context, in *UserReq, opts ...grpc.CallOption) (*UserResponse, error)
+	Create(ctx context.Context, in *UserReq, opts ...grpc.CallOption) (*Empty, error)
+	Update(ctx context.Context, in *UserReq, opts ...grpc.CallOption) (*Empty, error)
 	ListUsers(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*ListUserResponse, error)
 	DeleteUser(ctx context.Context, in *UserReq, opts ...grpc.CallOption) (*ListUserResponse, error)
 }
@@ -46,8 +46,8 @@ func (c *userClient) GetUser(ctx context.Context, in *IDReq, opts ...grpc.CallOp
 	return out, nil
 }
 
-func (c *userClient) Create(ctx context.Context, in *UserReq, opts ...grpc.CallOption) (*UserResponse, error) {
-	out := new(UserResponse)
+func (c *userClient) Create(ctx context.Context, in *UserReq, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
 	err := c.cc.Invoke(ctx, "/user.User/Create", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -55,8 +55,8 @@ func (c *userClient) Create(ctx context.Context, in *UserReq, opts ...grpc.CallO
 	return out, nil
 }
 
-func (c *userClient) Update(ctx context.Context, in *UserReq, opts ...grpc.CallOption) (*UserResponse, error) {
-	out := new(UserResponse)
+func (c *userClient) Update(ctx context.Context, in *UserReq, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
 	err := c.cc.Invoke(ctx, "/user.User/Update", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -87,8 +87,8 @@ func (c *userClient) DeleteUser(ctx context.Context, in *UserReq, opts ...grpc.C
 // for forward compatibility
 type UserServer interface {
 	GetUser(context.Context, *IDReq) (*UserResponse, error)
-	Create(context.Context, *UserReq) (*UserResponse, error)
-	Update(context.Context, *UserReq) (*UserResponse, error)
+	Create(context.Context, *UserReq) (*Empty, error)
+	Update(context.Context, *UserReq) (*Empty, error)
 	ListUsers(context.Context, *Empty) (*ListUserResponse, error)
 	DeleteUser(context.Context, *UserReq) (*ListUserResponse, error)
 }
@@ -100,10 +100,10 @@ type UnimplementedUserServer struct {
 func (UnimplementedUserServer) GetUser(context.Context, *IDReq) (*UserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUser not implemented")
 }
-func (UnimplementedUserServer) Create(context.Context, *UserReq) (*UserResponse, error) {
+func (UnimplementedUserServer) Create(context.Context, *UserReq) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Create not implemented")
 }
-func (UnimplementedUserServer) Update(context.Context, *UserReq) (*UserResponse, error) {
+func (UnimplementedUserServer) Update(context.Context, *UserReq) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
 }
 func (UnimplementedUserServer) ListUsers(context.Context, *Empty) (*ListUserResponse, error) {

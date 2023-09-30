@@ -27,7 +27,7 @@ func (u UserServer) GetUser(ctx context.Context, req *user.IDReq) (*user.UserRes
 	}, nil
 }
 
-func (u UserServer) Create(ctx context.Context, req *user.UserReq) (*user.UserResponse, error) {
+func (u UserServer) Create(ctx context.Context, req *user.UserReq) (*user.Empty, error) {
 	userr := &entities.User{
 		Email:    req.Email,
 		Fullname: req.Fullname,
@@ -36,16 +36,19 @@ func (u UserServer) Create(ctx context.Context, req *user.UserReq) (*user.UserRe
 	if err != nil {
 		return nil, err
 	}
-	ur := &user.UserResponse{
-		Email:    userr.Email,
-		Fullname: userr.Fullname,
-	}
-	return ur, err
+	return &user.Empty{}, err
 }
 
-func (u UserServer) Update(ctx context.Context, req *user.UserReq) (*user.UserResponse, error) {
-	//TODO implement me
-	panic("implement me")
+func (u UserServer) Update(ctx context.Context, req *user.UserReq) (*user.Empty, error) {
+	um := entities.User{
+		Email:    req.Email,
+		Fullname: req.Fullname,
+	}
+	err := u.userService.UpdateUser(&um)
+	if err != nil {
+		return nil, err
+	}
+	return &user.Empty{}, err
 }
 
 func (u UserServer) ListUsers(ctx context.Context, empty *user.Empty) (*user.ListUserResponse, error) {
