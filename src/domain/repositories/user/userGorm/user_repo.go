@@ -1,4 +1,4 @@
-package gorm
+package userGorm
 
 import (
 	user2 "bm-users/src/domain/repositories/user"
@@ -13,15 +13,16 @@ type GormUserRepository struct {
 
 // NewGormUserRepository creates a new instance of GormUserRepository.
 func NewGormUserRepository(db *gorm.DB) *GormUserRepository {
+	db.AutoMigrate(&entities.User{})
 	return &GormUserRepository{db: db}
 }
 
 // Create adds a new user to the database.
 func (repo *GormUserRepository) Create(user *entities.User) error {
-	return repo.db.Create(user).Error
+	return repo.db.Model(user).Create(user).Error
 }
 
-// GetByID retrieves an user from the database by its ID.
+// GetByID retrieves a user from the database by its ID.
 func (repo *GormUserRepository) GetByID(id int) (*entities.User, error) {
 	user := &entities.User{}
 	if err := repo.db.First(user, id).Error; err != nil {

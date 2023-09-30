@@ -11,6 +11,10 @@ type UserServer struct {
 	userService *services.UserService
 }
 
+func NewUserServer(userService *services.UserService) *UserServer {
+	return &UserServer{userService: userService}
+}
+
 func (u UserServer) GetUser(ctx context.Context, req *user.IDReq) (*user.UserResponse, error) {
 	//TODO implement me
 	panic("implement me")
