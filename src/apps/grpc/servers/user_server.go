@@ -52,8 +52,21 @@ func (u UserServer) Update(ctx context.Context, req *user.UserReq) (*user.Empty,
 }
 
 func (u UserServer) ListUsers(ctx context.Context, empty *user.Empty) (*user.ListUserResponse, error) {
-	//TODO implement me
-	panic("implement me")
+	users, err := u.userService.GetAllUsers()
+	if err != nil {
+		return nil, err
+	}
+	userResponses := make([]*user.UserResponse, len(users))
+	for i, um := range users {
+		userResponses[i] = &user.UserResponse{
+			ID:       int64(um.ID),
+			Email:    um.Email,
+			Fullname: um.Fullname,
+		}
+	}
+	return &user.ListUserResponse{
+		Users: userResponses,
+	}, nil
 }
 
 func (u UserServer) DeleteUser(ctx context.Context, req *user.UserReq) (*user.ListUserResponse, error) {
