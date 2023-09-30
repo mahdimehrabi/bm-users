@@ -91,6 +91,7 @@ type UserServer interface {
 	Update(context.Context, *UserReq) (*Empty, error)
 	ListUsers(context.Context, *Empty) (*ListUserResponse, error)
 	DeleteUser(context.Context, *UserReq) (*Empty, error)
+	mustEmbedUnimplementedUserServer()
 }
 
 // UnimplementedUserServer must be embedded to have forward compatible implementations.

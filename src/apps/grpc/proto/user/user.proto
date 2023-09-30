@@ -32,6 +32,7 @@ message UserReq{
     string email=1;
     string fullname=2;
     int64 ID=3;
+    repeated string lastIPs=5;
 }
 
 message IDReq {

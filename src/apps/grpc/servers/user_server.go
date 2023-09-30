@@ -5,6 +5,7 @@ import (
 	"bm-users/src/domain/services"
 	"bm-users/src/entities"
 	"context"
+	"strings"
 )
 
 type UserServer struct {
@@ -43,6 +44,7 @@ func (u UserServer) Update(ctx context.Context, req *user.UserReq) (*user.Empty,
 	um := entities.User{
 		Email:    req.Email,
 		Fullname: req.Fullname,
+		LastIPs:  strings.Join(req.LastIPs, ","),
 	}
 	err := u.userService.UpdateUser(&um)
 	if err != nil {
