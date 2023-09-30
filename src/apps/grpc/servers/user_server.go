@@ -16,8 +16,15 @@ func NewUserServer(userService *services.UserService) *UserServer {
 }
 
 func (u UserServer) GetUser(ctx context.Context, req *user.IDReq) (*user.UserResponse, error) {
-	//TODO implement me
-	panic("implement me")
+	um, err := u.userService.GetUserByID(req.GetID())
+	if err != nil {
+		return nil, err
+	}
+	return &user.UserResponse{
+		Email:    um.Email,
+		Fullname: um.Fullname,
+		ID:       int64(um.ID),
+	}, nil
 }
 
 func (u UserServer) Create(ctx context.Context, req *user.UserReq) (*user.UserResponse, error) {

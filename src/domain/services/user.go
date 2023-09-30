@@ -36,11 +36,11 @@ func (s *UserService) CreateUser(user *entities.User) error {
 	return nil
 }
 
-// GetUserByID retrieves an user by its ID.
-func (s *UserService) GetUserByID(id int) (*entities.User, error) {
+// GetUserByID retrieves a user by its ID.
+func (s *UserService) GetUserByID(id int64) (*entities.User, error) {
 	user, err := s.userRepo.GetByID(id)
 	if err != nil {
-		s.logger.Error("Failed to get user by ID", zap.Int("id", id), zap.Error(err))
+		s.logger.Error("Failed to get user by ID", zap.Int64("id", id), zap.Error(err))
 		return nil, fmt.Errorf("failed to get user by ID: %w", err)
 	}
 

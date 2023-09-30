@@ -23,7 +23,7 @@ func (repo *GormUserRepository) Create(user *entities.User) error {
 }
 
 // GetByID retrieves a user from the database by its ID.
-func (repo *GormUserRepository) GetByID(id int) (*entities.User, error) {
+func (repo *GormUserRepository) GetByID(id int64) (*entities.User, error) {
 	user := &entities.User{}
 	if err := repo.db.First(user, id).Error; err != nil {
 		if err == gorm.ErrRecordNotFound {
