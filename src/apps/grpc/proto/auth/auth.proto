@@ -1,0 +1,45 @@
+syntax = "proto3";
+
+package auth;
+
+option go_package = "bm-users/src/apps/grpc/proto/auth";
+
+
+service Authentication{
+  rpc Login(LoginReq) returns (TokensResponse);
+  rpc GetCredits(TokenReq) returns (Credits);
+  rpc RenewToken(TokenReq) returns (TokensResponse);
+  rpc BanUser(IDReq) returns (Empty);  //ban using redis by id, user won't able to login for several minutes so his access token will expired
+}
+
+
+message Empty {
+
+}
+
+message IDReq {
+  int64 ID = 1;
+}
+
+message TokenReq {
+  string Token = 1;
+}
+
+message Credits {
+  int64 ID = 1;
+  string Email = 2;
+  string Fullname = 3;
+}
+
+message LoginReq {
+  string Username = 1;
+  string Password = 2;
+}
+
+message TokensResponse {
+  string AccessToken = 1;
+  string RefreshToken = 2;
+  int64 AccessTokenExp = 3;
+  int64 RefreshTokenExp = 4;
+}
+
