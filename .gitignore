@@ -1,3 +1,4 @@
 .idea
 *.swp
 cmd/cmd
+.env
