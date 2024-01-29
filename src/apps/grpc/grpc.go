@@ -3,7 +3,7 @@ package grpc
 import (
 	"bm-users/src/apps/grpc/proto/user"
 	"bm-users/src/apps/grpc/servers"
-	"bm-users/src/domain/repositories/user/userGorm"
+	"bm-users/src/domain/repositories/user/gorm"
 	"bm-users/src/domain/services"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
@@ -32,7 +32,7 @@ func RunServer() {
 	if err != nil {
 		panic(err)
 	}
-	userRepo := userGorm.NewGormUserRepository(db)
+	userRepo := gorm.NewGormUserRepository(db)
 	userService := services.NewUserService(userRepo, logger)
 	userServer := servers.NewUserServer(userService)
 	user.RegisterUserServer(grpcServer, userServer)

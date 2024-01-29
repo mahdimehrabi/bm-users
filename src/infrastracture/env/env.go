@@ -9,6 +9,7 @@ type Env struct {
 	Port       string
 	RedisAddr  string
 	DatabaseCS string
+	Secret     string
 }
 
 func NewEnv() *Env {
@@ -22,5 +23,6 @@ func (e *Env) LoadEnv() error {
 	e.Port = os.Getenv("Port")
 	e.RedisAddr = os.Getenv("RedisAddr")
 	e.DatabaseCS = os.Getenv("DatabaseCS")
+	e.Secret = os.Getenv("Secret")
 	return nil
 }

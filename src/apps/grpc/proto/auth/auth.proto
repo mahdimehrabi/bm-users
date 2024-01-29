@@ -7,7 +7,6 @@ option go_package = "bm-users/src/apps/grpc/proto/auth";
 
 service Authentication{
   rpc Login(LoginReq) returns (TokensResponse);
-  rpc GetCredits(TokenReq) returns (Credits);
   rpc RenewToken(TokenReq) returns (TokensResponse);
   rpc BanUser(IDReq) returns (Empty);  //ban using redis by id, user won't able to login for several minutes so his access token will expired
 }
@@ -32,7 +31,7 @@ message Credits {
 }
 
 message LoginReq {
-  string Username = 1;
+  string Email = 1;
   string Password = 2;
 }
 

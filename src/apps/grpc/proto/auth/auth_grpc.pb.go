@@ -23,7 +23,6 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AuthenticationClient interface {
 	Login(ctx context.Context, in *LoginReq, opts ...grpc.CallOption) (*TokensResponse, error)
-	GetCredits(ctx context.Context, in *TokenReq, opts ...grpc.CallOption) (*Credits, error)
 	RenewToken(ctx context.Context, in *TokenReq, opts ...grpc.CallOption) (*TokensResponse, error)
 	BanUser(ctx context.Context, in *IDReq, opts ...grpc.CallOption) (*Empty, error)
 }
@@ -39,15 +38,6 @@ func NewAuthenticationClient(cc grpc.ClientConnInterface) AuthenticationClient {
 func (c *authenticationClient) Login(ctx context.Context, in *LoginReq, opts ...grpc.CallOption) (*TokensResponse, error) {
 	out := new(TokensResponse)
 	err := c.cc.Invoke(ctx, "/auth.Authentication/Login", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *authenticationClient) GetCredits(ctx context.Context, in *TokenReq, opts ...grpc.CallOption) (*Credits, error) {
-	out := new(Credits)
-	err := c.cc.Invoke(ctx, "/auth.Authentication/GetCredits", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -77,7 +67,6 @@ func (c *authenticationClient) BanUser(ctx context.Context, in *IDReq, opts ...g
 // for forward compatibility
 type AuthenticationServer interface {
 	Login(context.Context, *LoginReq) (*TokensResponse, error)
-	GetCredits(context.Context, *TokenReq) (*Credits, error)
 	RenewToken(context.Context, *TokenReq) (*TokensResponse, error)
 	BanUser(context.Context, *IDReq) (*Empty, error)
 	mustEmbedUnimplementedAuthenticationServer()
@@ -89,9 +78,6 @@ type UnimplementedAuthenticationServer struct {
 
 func (UnimplementedAuthenticationServer) Login(context.Context, *LoginReq) (*TokensResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Login not implemented")
-}
-func (UnimplementedAuthenticationServer) GetCredits(context.Context, *TokenReq) (*Credits, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetCredits not implemented")
 }
 func (UnimplementedAuthenticationServer) RenewToken(context.Context, *TokenReq) (*TokensResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RenewToken not implemented")
@@ -126,24 +112,6 @@ func _Authentication_Login_Handler(srv interface{}, ctx context.Context, dec fun
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(AuthenticationServer).Login(ctx, req.(*LoginReq))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Authentication_GetCredits_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(TokenReq)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(AuthenticationServer).GetCredits(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/auth.Authentication/GetCredits",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthenticationServer).GetCredits(ctx, req.(*TokenReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -194,10 +162,6 @@ var Authentication_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Login",
 			Handler:    _Authentication_Login_Handler,
-		},
-		{
-			MethodName: "GetCredits",
-			Handler:    _Authentication_GetCredits_Handler,
 		},
 		{
 			MethodName: "RenewToken",
